@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {BrowserRouter, Route, Routes} from "react-router-dom"
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import CourseComponent from "./components/CourseComponent";
 import StudentComponent from "./components/StudentComponent";
@@ -43,7 +43,8 @@ function App() {
           </MDBCollapse>
         </MDBContainer>
       </MDBNavbar>
-  <BrowserRouter<Routes>
+      <BrowserRouter>
+        <Routes>
           <Route element={<CourseComponent />} path={"/courses"} />
           <Route element={<StudentComponent />} path={"/students"} />
           <Route element={<InstructorComponent />} path={"/instructors"} />
