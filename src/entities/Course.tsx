@@ -7,7 +7,7 @@ class Course {
     throw new Error("Method not implemented.");
   }
   private name?: string;
-  private instructorId?: number;
+  private instructor?: Instructor;
   private students?: Array<Student>;
   private id?: number;
 
@@ -20,22 +20,21 @@ class Course {
     this.name = name;
   }
 
-  getInstructorId(): number | undefined {
-    return this.instructorId;
+  getInstructors(): Instructor | undefined {
+    return this.instructor;
   }
-  getStudents(): Array<Student> | undefined {
+  public getStudents(): Array<Student> | undefined {
     return this.students;
   }
-  setId(id: number): void {
+  public setId(id: number): void {
     this.id = id as number;
   }
 
   getId(): number | undefined {
     return this.id;
   }
-
-  setInstructorId(id: number): void {
-    this.instructorId = id as number;
+  setInstructors(instructor: Instructor): void {
+    this.instructor = instructor;
   }
 
   toString() {

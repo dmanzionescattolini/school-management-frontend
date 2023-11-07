@@ -1,46 +1,56 @@
-import {
-  MDBContainer,
-  MDBTable,
-  MDBTableBody,
-  MDBTableHead,
-} from "mdb-react-ui-kit";
-import React, { useEffect, useState } from "react";
+import * as React from "react";
+import Box from "@mui/material/Box";
+import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { useEffect, useState } from "react";
+import getAllStudents from "../../services/StudentService";
+import Student from "../../entities/Student";
 import Instructor from "../../entities/Instructor";
-import axios from "axios";
-import { CourseInterface } from "../../services/CourseService";
+import { getAllInstructors } from "../../services/InstructorService";
+
+const columns: GridColDef[] = [
+  { field: "instructorId", headerName: "ID", width: 90 },
+  {
+    field: "instructorName",
+    headerName: "Name",
+    width: 150,
+    editable: true,
+  },
+  {
+    field: "courses",
+    headerName: "Courses",
+    type: "Array<string>",
+    width: 1000,
+    editable: true,
+  },
+];
 
 export default function InstructorComponent() {
-  const [data, setData] = useState<Array<Instructor>>([]);
+  const [data, setData] = useState<Instructor[]>([]);
   useEffect(() => {
-    axios.get("http://localhost:8080/instructors").then((res) => {
-      setData(res.data);
-    });
-  }, []);
-  return (
-    <MDBContainer fluid>
-      <p className="lead w-100 mx-50 m-2" style={{ textAlign: "center" }}>
-        Instructors
-      </p>
+    async function getInstructors() {
+      getAllInstructors().then((response) => setData(response.data));
+    }
 
-      <MDBTable striped bordered hover small>
-        <MDBTableHead>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-          </tr>
-        </MDBTableHead>
-        <MDBTableBody>
-          {data.map((instructor: Instructor) => {
-            return (
-              <tr>
-                <td>{instructor.instructorId}</td>
-                <td>{instructor.instructorName}</td>
-                <td>{instructor.courses.toString()}</td>
-              </tr>
-            );
-          })}
-        </MDBTableBody>
-      </MDBTable>
-    </MDBContainer>
+    getInstructors();
+  }, [data.length]);
+
+  return (
+    <Box sx={{ height: 400, width: "100%" }}>
+      <DataGrid
+        rows={data}
+        getRowId={(row) => data.indexOf(row)}
+        columns={columns}
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 20,
+            },
+          },
+        }}
+        pageSizeOptions={[5]}
+        checkboxSelection
+        disableRowSelectionOnClick
+      />
+    </Box>
   );
 }

@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import CourseComponent from "./components/CourseComponent";
-import StudentComponent from "./components/StudentComponent";
-import InstructorComponent from "./components/InstructorComponent";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/Home/Home";
 import {
   MDBNavbar,
@@ -15,6 +12,10 @@ import {
   MDBNavbarNav,
   MDBNavbarLink,
 } from "mdb-react-ui-kit";
+import StudentSignUpComponent from "./components/StudentSignUpComponent/StudentSignUpComponent";
+import CourseComponent from "./components/CourseComponent/CourseComponent";
+import InstructorComponent from "./components/InstructorComponent/InstructorComponent";
+import StudentComponent from "./components/StudentComponent/StudentComponent";
 
 function App() {
   const [showNavSecond, setShowNavSecond] = useState(false);
@@ -49,6 +50,10 @@ function App() {
           <Route element={<StudentComponent />} path={"/students"} />
           <Route element={<InstructorComponent />} path={"/instructors"} />
           <Route element={<Home />} path={"/"} />
+          <Route
+            element={<StudentSignUpComponent />}
+            path={"/students/register"}
+          />
         </Routes>
       </BrowserRouter>
     </div>

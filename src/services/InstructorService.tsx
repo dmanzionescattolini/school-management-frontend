@@ -13,7 +13,6 @@ export interface InstructorInterface {
 export function getAllInstructors() {
   return axios.get("http://localhost:8080/instructors");
 }
-
 // export function getInstructorById(instructorId: number): Instructor {
 //   let instructor;
 //   let instructors = getAllInstructors();

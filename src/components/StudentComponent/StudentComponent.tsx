@@ -1,51 +1,69 @@
-import React, { useState } from "react";
+import * as React from "react";
+import Box from "@mui/material/Box";
+import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { useEffect, useState } from "react";
 import getAllStudents from "../../services/StudentService";
-import {
-  MDBAccordion,
-  MDBAccordionItem,
-  MDBContainer,
-  MDBListGroup,
-  MDBListGroupItem,
-  MDBTable,
-  MDBTableBody,
-  MDBTableHead,
-} from "mdb-react-ui-kit";
 import Student from "../../entities/Student";
 
-//import { Test } from './StudentComponent.styles';
+const columns: GridColDef[] = [
+  { field: "studentId", headerName: "ID", width: 90 },
+  {
+    field: "studentName",
+    headerName: "First name",
+    width: 150,
+    editable: true,
+  },
+  {
+    field: "studentLastName",
+    headerName: "Last name",
+    width: 150,
+    editable: true,
+  },
+  {
+    field: "studentEmail",
+    headerName: "Email",
+    type: "string",
+    width: 200,
+    editable: true,
+  },
+  {
+    field: "courses",
+    headerName: "Courses",
+    sortable: true,
+    type: "array",
+    width: 160,
+    editable: true,
+  },
+];
 
-const StudentComponent = () => {
-  const [data, setData] = useState<Array<Student>>([]);
+export default function StudentComponent() {
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [data, setData] = useState<Student[]>([]);
+  useEffect(() => {
+    async function getStudents() {
+      getAllStudents().then((response) => setData(response.data));
+    }
 
-  React.useEffect(() => {
-    getAllStudents().then((response) => setData(response.data));
-  }, []);
+    getStudents();
+  }, [data.length]);
+
   return (
-    <MDBContainer fluid>
-      <p className="lead w-100 mx-50 m-2" style={{ textAlign: "center" }}>
-        Students
-      </p>
-      <MDBTable striped bordered hover small>
-        <MDBTableHead className="">
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Classes Enrolled</th>
-          </tr>
-        </MDBTableHead>
-        <MDBTableBody>
-          {data.map((student: Student) => (
-            <tr>
-              <td>{student.studentName}</td>
-              <td>{student.studentLastName}</td>
-              <td>{student.studentEmail}</td>
-              <td>{student.courses}</td>
-            </tr>
-          ))}
-        </MDBTableBody>
-      </MDBTable>
-    </MDBContainer>
+    <Box sx={{ height: 400, width: "100%" }}>
+      <DataGrid
+        rows={data}
+        columns={columns}
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 20,
+            },
+          },
+        }}
+        pageSizeOptions={[5]}
+        checkboxSelection
+        disableRowSelectionOnClick
+      />
+    </Box>
   );
-};
-export default StudentComponent;
+}

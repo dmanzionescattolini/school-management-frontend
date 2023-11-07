@@ -46,7 +46,7 @@ export default function Home() {
                 outline
                 size="lg"
                 target="_blank"
-                href="/register"
+                href="/students/register"
               >
                 Sign Up
               </MDBBtn>

@@ -13,8 +13,8 @@ export interface CourseInterface {
   instructor: string;
   students: Array<string>;
 }
+
 const getAllCourses = () => {
   return axios.get("http://localhost:8080/courses");
 };
-
 export default getAllCourses;
